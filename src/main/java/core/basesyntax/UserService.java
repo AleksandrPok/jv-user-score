@@ -5,15 +5,15 @@ import core.basesyntax.exception.UserNotFoundException;
 public class UserService {
 
     public int getUserScore(String[] records, String email) {
-        return findIndex(records, email);
-    }
-
-    private int findIndex(String[] records, String email) {
         for (String record : records) {
-            if (record.contains(email) && !record.replace(email, "").isEmpty()) {
-                return Integer.parseInt(record.substring(record.indexOf(":") + 1));
+            String[] devidedRecord = record.split(":");
+            if (record.contains(email)
+                    && !devidedRecord[1].isEmpty()
+                    && !record.equals(email)) {
+                return Integer.parseInt(devidedRecord[1]);
             }
         }
-        throw new UserNotFoundException();
+        throw new UserNotFoundException("UserNotFoundException: "
+                + "User with given email doesn't exist");
     }
 }
